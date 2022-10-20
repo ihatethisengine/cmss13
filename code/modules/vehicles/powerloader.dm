@@ -200,8 +200,66 @@
 	if(M == linked_powerloader.buckled_mob)
 		unbuckle() //if the pilot clicks themself with the clamp, it unbuckles them.
 		return TRUE
+	else if(istype(M, /mob/living/carbon/Xenomorph))
+		var /mob/living/carbon/Xenomorph/X = M
+		if(X.mob_size == MOB_SIZE_XENO_SMALL || X.caste_type == "Drone" || X.caste_type == "Sentinel")
+			if((X.health / X.maxHealth * 100) < 15)
+				var/turf/cur_loc = X.loc
+				if(!istype(cur_loc))
+					return ..()
+
+				if(linked_powerloader.buckled_mob.action_busy)
+					return ..()
+
+				X.Stun(30)
+				X.emote("needhelp")
+				playsound(src, 'sound/machines/hydraulics_1.ogg', 40, 1)
+				if(do_after(linked_powerloader.buckled_mob, 30, INTERRUPT_ALL, BUSY_ICON_HOSTILE, X))
+					if(!X)
+						return
+					if(X.loc != cur_loc)
+						return
+					if(!src)
+						return
+
+					X.emote("roar")
+					X.gib(initial(name))
+					return
+				X.SetStunned(0)
+				return
+			else
+				. = ..()
+				throw_on_attack(M)
+				X.KnockDown(1)
+				X.Slow(2)
+				X.Daze(1)
+		else
+			. = ..()
+			X.Slow(1)
+			X.Daze(0.5)
 	else
-		return ..()
+		. = ..()
+		if(isYautja(M) || isSynth(M))
+			throw_on_attack(M)
+			M.Slow(1)
+			M.Daze(0.5)
+		else
+			throw_on_attack(M)
+			M.KnockDown(1)
+			M.Slow(2)
+			M.Daze(1)
+
+/obj/item/powerloader_clamp/proc/throw_on_attack(mob/living/mob)
+	var/turf/T = get_turf(mob)
+	var/turf/temp = get_turf(mob)
+	for (var/x in 0 to 2)
+		temp = get_step(T, linked_powerloader.buckled_mob.dir)
+		if (!temp)
+			break
+		T = temp
+
+		mob.throw_atom(T, 2, SPEED_VERY_FAST, linked_powerloader.buckled_mob, TRUE)
+		shake_camera(mob, 10, 1)
 
 /obj/item/powerloader_clamp/afterattack(var/atom/target, var/mob/user, var/proximity)
 	if(!proximity)
