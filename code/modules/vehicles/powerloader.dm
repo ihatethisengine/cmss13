@@ -159,6 +159,7 @@
 	var/obj/vehicle/powerloader/linked_powerloader
 	var/obj/loaded
 	var/is_right = FALSE
+	hitsound = 'sound/weapons/smash.ogg'
 
 //--------------------GENERAL PROCS-----------------
 
@@ -203,7 +204,7 @@
 	else if(istype(M, /mob/living/carbon/Xenomorph))
 		var /mob/living/carbon/Xenomorph/X = M
 		if(X.mob_size == MOB_SIZE_XENO_SMALL || X.caste_type == "Drone" || X.caste_type == "Sentinel")
-			if((X.health / X.maxHealth * 100) < 15)
+			if((X.health / X.maxHealth * 100) < 15 && linked_powerloader.buckled_mob.a_intent == INTENT_HARM)
 				var/turf/cur_loc = X.loc
 				if(!istype(cur_loc))
 					return ..()
@@ -211,9 +212,13 @@
 				if(linked_powerloader.buckled_mob.action_busy)
 					return ..()
 
-				X.Stun(30)
-				X.emote("needhelp")
+				linked_powerloader.buckled_mob.visible_message(SPAN_HIGHDANGER("[linked_powerloader.buckled_mob] begins to squeeze [X.name] with \the [src]."),
+					SPAN_HIGHDANGER("You begin to squeeze [X.name] with \the [src]."))
 				playsound(src, 'sound/machines/hydraulics_1.ogg', 40, 1)
+
+				X.KnockDown(30)
+				X.emote("needhelp")
+
 				if(do_after(linked_powerloader.buckled_mob, 30, INTERRUPT_ALL, BUSY_ICON_HOSTILE, X))
 					if(!X)
 						return
@@ -222,11 +227,16 @@
 					if(!src)
 						return
 
+					linked_powerloader.buckled_mob.visible_message(SPAN_HIGHDANGER("[linked_powerloader.buckled_mob] violently squeezes [X.name] with \the [src]."),
+						SPAN_HIGHDANGER("You violently squeeze [X.name] with \the [src]."))
+					playsound(src, 'sound/machines/hydraulics_2.ogg', 40, 1)
+
 					X.emote("roar")
 					X.gib(initial(name))
-					return
-				X.SetStunned(0)
-				return
+				else
+					linked_powerloader.buckled_mob.visible_message(SPAN_NOTICE("[linked_powerloader.buckled_mob] stops squeezing [X.name] with \the [src]."),
+					SPAN_NOTICE("You stop squeezing [X.name] with \the [src]."))
+					X.SetKnockeddown(0)
 			else
 				. = ..()
 				throw_on_attack(M)
@@ -259,6 +269,8 @@
 		T = temp
 
 		mob.throw_atom(T, 2, SPEED_VERY_FAST, linked_powerloader.buckled_mob, TRUE)
+		mob.visible_message(SPAN_DANGER("[mob] is sent flying by a blow of \the [src]."),
+					SPAN_DANGER("You are sent flying by a blow of \the [src]."))
 		shake_camera(mob, 10, 1)
 
 /obj/item/powerloader_clamp/afterattack(var/atom/target, var/mob/user, var/proximity)
