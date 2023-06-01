@@ -273,7 +273,7 @@
 					SPAN_DANGER("You are sent flying by a blow of \the [src]."))
 		shake_camera(mob, 10, 1)
 
-/obj/item/powerloader_clamp/afterattack(atom/target, mob/user, proximity)
+/obj/item/powerloader_clamp/afterattack(var/atom/target, var/mob/user, var/proximity)
 	if(!proximity)
 		return
 	if(!linked_powerloader)
