@@ -201,8 +201,8 @@
 	if(M == linked_powerloader.buckled_mob)
 		unbuckle() //if the pilot clicks themself with the clamp, it unbuckles them.
 		return TRUE
-	else if(istype(M, /mob/living/carbon/Xenomorph))
-		var /mob/living/carbon/Xenomorph/X = M
+	else if(istype(M, /mob/living/carbon/xenomorph))
+		var /mob/living/carbon/xenomorph/X = M
 		if(X.mob_size == MOB_SIZE_XENO_SMALL || X.caste_type == "Drone" || X.caste_type == "Sentinel")
 			if((X.health / X.maxHealth * 100) < 15 && linked_powerloader.buckled_mob.a_intent == INTENT_HARM)
 				var/turf/cur_loc = X.loc
@@ -236,7 +236,7 @@
 				else
 					linked_powerloader.buckled_mob.visible_message(SPAN_NOTICE("[linked_powerloader.buckled_mob] stops squeezing [X.name] with \the [src]."),
 					SPAN_NOTICE("You stop squeezing [X.name] with \the [src]."))
-					X.SetKnockeddown(0)
+					X.SetKnockDown(0)
 			else
 				. = ..()
 				throw_on_attack(M)
@@ -249,7 +249,7 @@
 			X.Daze(0.5)
 	else
 		. = ..()
-		if(isYautja(M) || isSynth(M))
+		if(isyautja(M) || issynth(M))
 			throw_on_attack(M)
 			M.Slow(1)
 			M.Daze(0.5)
