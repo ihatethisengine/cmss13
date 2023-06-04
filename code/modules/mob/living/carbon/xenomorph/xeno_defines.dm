@@ -910,12 +910,11 @@
 		potential_host.update_med_icon()
 	var/shipside_humans = 0
 	for(var/mob/living/carbon/human/current_human as anything in GLOB.alive_human_list)
-		if(isspecieshuman(current_human))
-			var/atom/where = current_human
-			if (where.z == 0 && current_human.loc)
-				where = current_human.loc
-			if(is_mainship_level(where.z))
-				shipside_humans++
+		var/atom/where = current_human
+		if (where.z == 0 && current_human.loc)
+			where = current_human.loc
+		if(is_mainship_level(where.z))
+			shipside_humans++
 	hijack_burrowed_surge = TRUE
 	hijack_burrowed_left = max(n_ceil((shipside_humans - totalXenos.len) / 5), 0)
 	hivecore_cooldown = FALSE
