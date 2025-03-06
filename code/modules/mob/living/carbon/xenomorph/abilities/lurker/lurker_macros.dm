@@ -40,3 +40,38 @@
 	set hidden = TRUE
 	var/action_name = "Headbite"
 	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_lash()
+	set category = "Alien"
+	set name = "Pounce"
+	set hidden = TRUE
+	var/action_name = "Pounce"
+	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_lurker_stalking()
+	set category = "Alien"
+	set name = "Turn Invisibility"
+	set hidden = TRUE
+	var/action_name = "Turn Invisibility"
+	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_echolocation()
+	set category = "Alien"
+	set name = "Echolocation"
+	set hidden = TRUE
+	var/action_name = "Echolocation"
+	handle_xeno_macro(src, action_name)
+
+/datum/action/xeno_action/verb/verb_hibernate()
+	set category = "Alien"
+	set name = "hibernate"
+	set hidden = TRUE
+	var/action_name = "hibernate"
+	handle_xeno_macro(src,action_name)
+
+/datum/action/xeno_action/verb/verb_heartbite()
+	set category = "Alien"
+	set name = "Heartbite"
+	set hidden = TRUE
+	var/action_name = "Heartbite"
+	handle_xeno_macro(src, action_name)

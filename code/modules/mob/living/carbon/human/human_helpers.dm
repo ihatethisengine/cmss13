@@ -423,6 +423,8 @@
 
 /mob/living/carbon/human/can_be_pulled_by(mob/mob)
 	var/ignores_stripdrag_flag = FALSE
+	if(HAS_TRAIT(src, TRAIT_NAILED))
+		return FALSE
 	if(ishuman(mob))
 		var/mob/living/carbon/human/human = mob
 		ignores_stripdrag_flag = human.species.ignores_stripdrag_flag

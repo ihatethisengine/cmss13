@@ -15,7 +15,7 @@
 
 	attack_delay = 2 // VERY high slash damage, but attacks relatively slowly
 
-	available_strains = list(/datum/xeno_strain/vampire)
+	available_strains = list(/datum/xeno_strain/vampire, /datum/xeno_strain/stalker)
 	behavior_delegate_type = /datum/behavior_delegate/lurker_base
 
 	deevolves_to = list(XENO_CASTE_RUNNER)
@@ -250,7 +250,8 @@
 	behavior.on_invisibility()
 
 	// if we go off early, this also works fine.
-	invis_timer_id = addtimer(CALLBACK(src, PROC_REF(invisibility_off)), duration, TIMER_STOPPABLE)
+	if(duration)
+		invis_timer_id = addtimer(CALLBACK(src, PROC_REF(invisibility_off)), duration, TIMER_STOPPABLE)
 
 	return ..()
 

@@ -165,6 +165,8 @@
 #define TRAIT_NO_STRAY "trait_no_stray"
 // only used by valkyrie
 #define TRAIT_VALKYRIE_ARMORED "trait_valkyrie_armored"
+///
+#define TRAIT_NAILED "trait_nailed"
 
 // SPECIES TRAITS
 /// Knowledge of Yautja technology

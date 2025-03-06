@@ -298,11 +298,19 @@
 		return
 	var/t_him = p_them()
 
+
+
 	var/shake_action
 	if(stat == DEAD || HAS_TRAIT(src, TRAIT_INCAPACITATED) || sleeping) // incap implies also unconscious or knockedout
 		shake_action = "wake [t_him] up!"
 	else if(HAS_TRAIT(src, TRAIT_FLOORED))
 		shake_action = "get [t_him] up!"
+
+	if(HAS_TRAIT(src, TRAIT_NAILED))
+		M.visible_message(SPAN_NOTICE("[M] shakes [src] trying to [shake_action], but [src] is nailed to the ground!"),
+			SPAN_NOTICE("You shake [src] trying to [shake_action], but [src] is nailed to the ground!"), null, 4)
+		playsound(loc, 'sound/weapons/thudswoosh.ogg', 25, 1, 5)
+		return
 
 	if(shake_action) // We are incapacitated in some fashion
 		if(client)

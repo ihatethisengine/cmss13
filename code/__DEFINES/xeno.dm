@@ -388,6 +388,7 @@
 #define RUNNER_ACIDER "Acider"
 
 // Lurker strain flags
+#define LURKER_STALKER "Stalker"
 #define LURKER_VAMPIRE "Vampire"
 
 // Ravager strain flags
@@ -667,6 +668,7 @@
 #define XENO_SHIELD_SOURCE_SHIELD_PILLAR 9
 #define XENO_SHIELD_SOURCE_CUMULATIVE_GENERIC 10
 #define XENO_SHIELD_SOURCE_KING_BULWARKSPELL 11
+#define XENO_SHIELD_SOURCE_STALKER 12
 
 //XENO CASTES
 #define XENO_CASTE_LARVA  "Larva"

@@ -202,6 +202,7 @@
 	var/knockdown = TRUE // Should we knock down the target?
 	var/knockdown_duration = 1 // 1 for runners, 3 for lurkers.
 										// ONLY USED IF THE POUNCE KNOCKS DOWN
+	var/nail = FALSE
 
 	var/slash = FALSE // Do we slash upon reception?
 	var/slash_bonus_damage = 0 // Any bonus damage to apply on the tackle slash, if applicable
@@ -223,6 +224,8 @@
 
 	var/list/pounce_callbacks = null // Specific callbacks to invoke when a pounce lands on an atom of a specific type
 										// (note that if a collided atom does not match any of the key types, defaults to the appropriate X_launch_collision proc)
+	/// Callbacks to call when the pounce (throw) ends
+	var/list/pounce_end_callbacks = null
 
 /datum/action/xeno_action/activable/pounce/New()
 	. = ..()

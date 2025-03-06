@@ -62,6 +62,23 @@
 	desc = "You can't stand up!"
 	icon_state = ALERT_FLOORED
 
+//NAILED
+/datum/status_effect/incapacitating/nailed
+	id = "nailed"
+//	alert_type = /atom/movable/screen/alert/status_effect/knockdown
+
+/datum/status_effect/incapacitating/nailed/on_apply()
+	. = ..()
+	if(!.)
+		return
+	owner.add_traits(list(TRAIT_FLOORED, TRAIT_IMMOBILIZED), TRAIT_STATUS_EFFECT(id))
+	if(owner.pulledby)
+		owner.pulledby.stop_pulling()
+
+/datum/status_effect/incapacitating/nailed/on_remove()
+	owner.remove_traits(list(TRAIT_FLOORED, TRAIT_IMMOBILIZED), TRAIT_STATUS_EFFECT(id))
+	return ..()
+
 //IMMOBILIZED
 /datum/status_effect/incapacitating/immobilized
 	id = "immobilized"

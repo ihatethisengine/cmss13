@@ -832,6 +832,8 @@ GLOBAL_DATUM_INIT(hud_icon_hudfocus, /image, image('icons/mob/hud/marine_hud.dmi
 		tag_holder.overlays += image('icons/mob/hud/hud.dmi', src, "prae_tag")
 
 	var/freeze_found = HAS_TRAIT(src, TRAIT_IMMOBILIZED) && body_position == STANDING_UP && !buckled // Eligible targets are unable to move but can stand and aren't buckled (eg nested) - This is to convey that they are temporarily unable to move
+	if(HAS_TRAIT(src, TRAIT_NAILED))
+		freeze_found = TRUE
 	if (freeze_found)
 		freeze_holder.overlays += image('icons/mob/hud/hud.dmi', src, "xeno_freeze")
 
