@@ -66,6 +66,7 @@
 	if(istype(carbon_target))
 		to_chat(world, "test2.7")
 		stalk.lash_target_ref = WEAKREF(carbon_target)
+		stalk.lash_initial_turf = get_turf(xeno)
 		to_chat(world, "test2.8")
 		RegisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE, PROC_REF(lashing_turf))
 	to_chat(world, "test3")
@@ -73,6 +74,7 @@
 	to_chat(world, "test4")
 	if(!.)
 		stalk.lash_target_ref = null
+		stalk.lash_initial_turf = null
 		if(istype(carbon_target))
 			UnregisterSignal(owner, COMSIG_MOVABLE_PRE_MOVE)
 		return
@@ -106,6 +108,12 @@
 		return
 	if(target.stat == DEAD || xeno.can_not_harm(target) || !xeno.Adjacent(target))
 		return
+	if(knockdown && stalk.lash_initial_turf)
+		var/dir1 = get_dir(stalk.lash_initial_turf, xeno)
+		var/dir2 = get_dir(xeno, target)
+		if(!((dir1 & dir2) || (dir2 & dir1))) //still pounce them if they in a relative same direction as the direction of the pounce
+			return
+		target.KnockDown(knockdown_duration)
 	additional_effects(target)
 
 /datum/action/xeno_action/activable/pounce/lash/additional_effects(mob/living/living_target) //pounce effects
