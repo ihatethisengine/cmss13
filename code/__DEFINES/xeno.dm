@@ -388,8 +388,8 @@
 #define RUNNER_ACIDER "Acider"
 
 // Lurker strain flags
-#define LURKER_STALKER "Stalker"
 #define LURKER_VAMPIRE "Vampire"
+#define LURKER_STALKER "Stalker"
 
 // Ravager strain flags
 #define RAVAGER_HEDGEHOG "Hedgehog"

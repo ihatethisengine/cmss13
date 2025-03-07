@@ -504,11 +504,11 @@
 		SPAN_XENOHIGHDANGER("We pierce [target_carbon]’s chest with our inner jaw!"))
 	xeno.flick_attack_overlay(target_carbon, "headbite")
 	xeno.animation_attack_on(target_carbon, pixel_offset = 16)
-	if(ishuman(target_carbon))
-		var/mob/living/carbon/human/target_human = target_carbon
-		target_human.temp_set_grace_period(3 MINUTES)
 	target_carbon.apply_armoured_damage(60, ARMOR_MELEE, BRUTE, "chest", 5) //DIE
 	target_carbon.death(create_cause_data("heartbite execution", xeno), FALSE)
+	if(ishuman(target_carbon))
+		var/mob/living/carbon/human/target_human = target_carbon
+		target_human.revive_grace_period -= 2 MINUTES
 	log_attack("[key_name(xeno)] was executed by [key_name(target_carbon)] with a heartbite!")
 	reward()
 	return ..()
