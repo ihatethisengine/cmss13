@@ -15,6 +15,18 @@
 	/// a cost penalty is added at each level above 5 (+1 at 6, +2 at 7, +4 at 8, +5 at 9, +7 at 10)
 	var/cost_penalty = TRUE
 
+	var/static/list/forced_reagents = list(PLASMA_PURPLE = 5, PLASMA_ROYAL = 7)
+
+/datum/chem_property/proc/get_forced_reagents()
+	to_chat(world, "test0 [length(forced_reagents)]")
+	var/list/result = list()
+	for(var/reagent in forced_reagents)
+		to_chat(world, "test1 [reagent]")
+		to_chat(world, "test2 [forced_reagents[reagent]]")
+		if(level >= forced_reagents[reagent])
+			result += reagent
+	return result
+
 /datum/chem_property/Destroy()
 	holder = null
 	. = ..()

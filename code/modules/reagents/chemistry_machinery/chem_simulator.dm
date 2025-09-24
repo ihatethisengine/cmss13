@@ -360,6 +360,7 @@
 	var/list/old_reaction = O.required_reagents.Copy()
 	var/datum/chemical_reaction/generated/R = new /datum/chemical_reaction/generated()
 	R.required_reagents = old_reaction.Copy()
+
 	while(LAZYLEN(recipe_targets) < 3)
 		var/list/target_elevated[0]
 		for(var/i = 0 to 5) //5 attempts at modifying the recipe before elevating recipe length
@@ -564,10 +565,65 @@
 		qdel(R)
 		return
 
+		//LAZYSET(recipe_targets, 1, PLASMA_PHEROMONE)
+
 	R.make_alike(assoc_R)
 
 	if(length(R.required_reagents) > 2 && !recipe_targets[recipe_target]) //we only replace if the recipe isn't small and the target is not set TRUE to being elevated
 		LAZYREMOVE(R.required_reagents, pick(R.required_reagents))
+
+	var/list/forced_reagents = list()
+	var/forced_reagent
+	var/list/trumped_reagents = list()
+	var/trumped_reagent
+	for(var/datum/chem_property/prop in C.properties)
+		forced_reagents += prop.get_forced_reagents()
+	if(length(forced_reagents))
+		to_chat(world, "test3")
+		forced_reagents = uniquelist(shuffle(forced_reagents))
+		for(var/reagent in forced_reagents)
+			if(!forced_reagent)
+				forced_reagent = reagent
+			else
+				var/datum/reagent/old_reagent = GLOB.chemical_reagents_list[forced_reagent]
+				var/datum/reagent/new_reagent = GLOB.chemical_reagents_list[reagent]
+				if(new_reagent.objective_value > old_reagent.objective_value)
+					forced_reagent = reagent
+		trumped_reagents = shuffle(forced_reagents - forced_reagent)
+		for(var/reagent in trumped_reagents)
+			if(reagent in R.required_reagents)
+				trumped_reagent = reagent
+				break
+
+		if(trumped_reagent)
+			LAZYREMOVE(R.required_reagents, trumped_reagent)
+			R.add_component(forced_reagent)
+		else if(forced_reagent)
+			LAZYREMOVE(R.required_reagents, pick(R.required_reagents))
+			R.add_component(forced_reagent)
+
+	// var/plasma = FALSE
+	// var/royal = FALSE
+	// for(var/datum/chem_property/prop in C.properties)
+	// 	to_chat(world, "test [prop.name] [prop.level]")
+	// 	if(prop.royal_level > 0 && prop.level >= prop.royal_level)
+	// 		royal = TRUE
+	// 		break
+	// 	if(prop.plasma_level > 0 && prop.level >= prop.plasma_level)
+	// 		plasma = TRUE
+	// if(royal)
+	// 	if(!(PLASMA_ROYAL in R.required_reagents))
+	// 		if(PLASMA_PURPLE in R.required_reagents)
+	// 			LAZYREMOVE(R.required_reagents, PLASMA_PURPLE)
+	// 			R.add_component(PLASMA_ROYAL)
+	// 		else
+	// 			LAZYREMOVE(R.required_reagents, pick(R.required_reagents))
+	// 			R.add_component(PLASMA_ROYAL)
+	// else if(plasma)
+	// 	if(!(PLASMA_PURPLE in R.required_reagents) && !(PLASMA_ROYAL in R.required_reagents))
+	// 		LAZYREMOVE(R.required_reagents, pick(R.required_reagents))
+	// 		R.add_component(PLASMA_PURPLE)
+
 	R.add_component(recipe_target, text2num(pick_weight(list("1" = 30, "2" = 15, "3" = 15, "4" = 5))))
 
 	//Handle new overdose
