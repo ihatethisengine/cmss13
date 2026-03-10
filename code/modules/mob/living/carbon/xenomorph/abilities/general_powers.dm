@@ -271,7 +271,7 @@
 			return FALSE
 		if(SECRETE_RESIN_FAIL)
 			if(xeno_cooldown)
-				apply_cooldown_override(xeno_cooldown_fail)
+				apply_cooldown_override(xeno_cooldown * xeno_cooldown_interrupt_modifier)
 			return FALSE
 	return TRUE
 
