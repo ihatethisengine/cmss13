@@ -272,6 +272,15 @@
 /obj/structure/machinery/power/power_generator/reactor/handle_tail_stab(mob/living/carbon/xenomorph/xeno, blunt_stab)
 	return TAILSTAB_COOLDOWN_NONE
 
+/obj/structure/machinery/power/power_generator/reactor/inoperable(additional_flags = 0)
+	var/area/area = get_area(src)
+	var/obj/structure/machinery/power/apc/apc = area ? area.get_apc() : null
+	if(!apc)
+		return TRUE
+	if(apc.inoperable())
+		return TRUE
+	return ..(additional_flags)
+
 /obj/structure/machinery/power/power_generator/reactor/attackby(obj/item/attacking_item, mob/user)
 	//Fuel Cells
 	if(user.action_busy)
