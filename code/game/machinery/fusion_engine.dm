@@ -272,14 +272,14 @@
 /obj/structure/machinery/power/power_generator/reactor/handle_tail_stab(mob/living/carbon/xenomorph/xeno, blunt_stab)
 	return TAILSTAB_COOLDOWN_NONE
 
-/obj/structure/machinery/power/power_generator/reactor/inoperable(additional_flags = 0)
+/obj/structure/machinery/power/power_generator/reactor/proc/has_working_apc()
 	var/area/area = get_area(src)
 	var/obj/structure/machinery/power/apc/apc = area ? area.get_apc() : null
 	if(!apc)
-		return TRUE
+		return FALSE
 	if(apc.inoperable())
-		return TRUE
-	return ..(additional_flags)
+		return FALSE
+	return TRUE
 
 /obj/structure/machinery/power/power_generator/reactor/attackby(obj/item/attacking_item, mob/user)
 	//Fuel Cells
@@ -365,7 +365,7 @@
 		if(!do_after(user, 2 SECONDS, INTERRUPT_ALL, BUSY_ICON_BUILD))
 			return
 
-		if(inoperable())
+		if(inoperable() && !has_working_apc())
 			to_chat(user, SPAN_WARNING("[src] needs to be working and have external power in order to be [overloaded ? "restored" : "overloaded"]."))
 			return
 
